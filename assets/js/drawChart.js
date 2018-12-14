@@ -392,7 +392,7 @@ function drawChartFourPaddle() {
 	//   title: 'Double Paddle Detector',
 	//   subtitle: 'Start Time: ' + startDate.toString(),
 	// },
-	title: 'Pot Detector (all counts)',
+	title: '4-Paddle Detector (muons)',
 	titleTextStyle:{
 	    //      color: '#839496',
 	    fontName: '"Avant Garde",Avantgarde,"Century Gothic",CenturyGothic,AppleGothic,sans-serif',
