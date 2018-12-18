@@ -24,12 +24,18 @@ Each detector's data must be analyzed separately.
 
 ## Updating the data with a script
 Place the Liquid Scintillator's **all.dat** file in the folder named **LScint**.
+
 Place the Pot detector's **all.dat** file in the folder named **Pot**.
+
 Place the 4-paddle detector's **all.dat** file in the folder named **4Paddle**.
+
 `sudo ./dataAnalysis.sh`
 
 
 ### Updating data manually
 The liquid scintillator detector's data may be left as **allFormat.dat**.
+
 The 4-paddle detector's data should be renamed from **allFormat.dat** to **allFormat4Paddle.dat**.
+
 The pot detector's data should be renamed from **allFormat.dat** to **allFormatPot.dat**.
+
