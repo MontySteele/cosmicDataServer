@@ -3,7 +3,7 @@ Detector Web Interface
 
 This code runs a webpage of graphs showing cosmic ray data from several detectors.
 
-# Launching the display
+## Launching the display
 `sudo nginx service start`
 
 ## Gathering data
