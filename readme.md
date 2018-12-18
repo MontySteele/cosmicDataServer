@@ -4,19 +4,19 @@ Detector Web Interface
 This code runs a webpage of graphs showing cosmic ray data from several detectors.
 
 # Launching the display
-sudo nginx service start
+'sudo nginx service start'
 
-##Gathering data
+## Gathering data
 
 Each detector's data must be concatenated into a file called 'all.dat'
-cat * > all.dat
+'cat * > all.dat'
 
 The all.dat file must be in the same directory as the formatLog.C program.
 This program will modify the data, then place it in an 'allFormat.dat' file for processing.
 
 ## Updating the display
-sudo g++ formatLog.C
-sudo ./a.out
+'''sudo g++ formatLog.C
+sudo ./a.out'''
 
 Each detector's data must be analyzed separately.
 
@@ -24,7 +24,7 @@ Each detector's data must be analyzed separately.
 Place the Liquid Scintillator's 'all.dat' file in the folder named 'LScint'.
 Place the Pot detector's 'all.dat' file in the folder named 'Pot'.
 Place the 4-paddle detector's'all.dat' file in the folder named '4Paddle'.
-sudo ./dataAnalysis.sh
+'sudo ./dataAnalysis.sh'
 
 
 ### Updating data manually
