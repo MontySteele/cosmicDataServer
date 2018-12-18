@@ -3,7 +3,7 @@ Detector Web Interface
 
 This code runs a webpage of graphs showing cosmic ray data from several detectors.
 
-## Launching the display
+## Start the display
 `sudo nginx service start`
 
 ## Gathering data
@@ -22,7 +22,7 @@ sudo ./a.out
 
 Each detector's data must be analyzed separately.
 
-## Updating the data with a script
+### Updating the data with a script
 Place the Liquid Scintillator's **all.dat** file in the folder named **LScint**.
 
 Place the Pot detector's **all.dat** file in the folder named **Pot**.
