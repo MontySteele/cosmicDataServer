@@ -50,15 +50,18 @@ function openPot(evt, cityName) {
     // Show the current tab, and add an "active" class to the button that opened the tab
     document.getElementById(cityName).style.display = "block";
     evt.currentTarget.className += " active";
-    readPot(potLink);
-    drawChartPot();
-    drawChartPot();
-    drawChartFourPaddle();
+
+    read(potLink);
+
+    setTimeout(function(){
+	
+	drawChartPot();
+	
+    }, 300); 
 }
 
 function openLS(evt, cityName) {
-   
-
+    
     // Get all elements with class="tabcontent" and hide them
     tabcontent = document.getElementsByClassName("tabcontent");
     for (i = 0; i < tabcontent.length; i++) {
@@ -76,20 +79,19 @@ function openLS(evt, cityName) {
     evt.currentTarget.className += " active";
     
     read(link);
-  
-    drawChartTotal();
-    drawChartMuon();
-    drawChartNeutron();
 
-    	  total_counts.update();
-	  muon_counts.update();
-	  neutron_counts.update();
+    setTimeout(function(){
+	
+	drawChartTotal();
+	drawChartMuon();
+	drawChartNeutron();
+	
+    }, 300); 
 
-    
 }
 
 function openFour(evt, cityName) {
-   
+    
     // Get all elements with class="tabcontent" and hide them
     tabcontent = document.getElementsByClassName("tabcontent");
     for (i = 0; i < tabcontent.length; i++) {
@@ -106,11 +108,13 @@ function openFour(evt, cityName) {
     document.getElementById(cityName).style.display = "block";
     evt.currentTarget.className += " active";
     read(FourPaddleLink);
-    drawChartTotal();
-    drawChartMuon();
-    drawChartNeutron();
-    drawChartPot();
-      drawChartFourPaddle();
+
+    setTimeout(function(){
+	
+	drawChartFourPaddle();
+	
+    }, 300); 
+    
 }
 
 function createButton(icon, link){
@@ -180,7 +184,7 @@ function spanBufferChanged(){
     drawChartMuon();
     drawChartNeutron();
     drawChartPot();
-      drawChartFourPaddle();
+    drawChartFourPaddle();
 }
 
 function show(){
@@ -218,6 +222,7 @@ function formatData(x) {
     var neutronTotal = 0;
     var i;
     var c = 0;
+    console.log(dataSet.length);
     for(i=0;i<(dataSet.length)-1;i++){	
 	if(c==x){
 	    //New timestamp
@@ -247,12 +252,14 @@ function formatData(x) {
 }
 
 read(link);
+
 google.charts.load('current', {'packages':['corechart']});
 google.charts.setOnLoadCallback(drawChartTotal);
 google.charts.setOnLoadCallback(drawChartMuon);
 google.charts.setOnLoadCallback(drawChartNeutron);
 google.charts.setOnLoadCallback(drawChartPot);
 google.charts.setOnLoadCallback(drawChartFourPaddle);
+
 //Draws the chart for all of our data at once
 
 window.onresize=function(){
@@ -261,7 +268,4 @@ window.onresize=function(){
     drawChartNeutron();
     drawChartPot();
     drawChartFourPaddle();
-
 }
-
-
