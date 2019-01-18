@@ -29,9 +29,10 @@ var i, tabcontent, tablinks;
 
 window.onload = function(){
     document.getElementById("iconRow").appendChild(createButton("fa-file-text-o", link));
-    document.getElementById("iconRow").appendChild(createButton("fa-github", "https://github.com/ahruschka/detectorWebInterface"));
+    document.getElementById("iconRow").appendChild(createButton("fa-file-text-o", potLink));
+    document.getElementById("iconRow").appendChild(createButton("fa-file-text-o", FourPaddleLink));
+    document.getElementById("iconRow").appendChild(createButton("fa-github", "https://github.com/MontySteele/cosmicDataServer"));
 };
-
 
 function openPot(evt, cityName) {
 
@@ -228,7 +229,7 @@ function formatData(x) {
 	    //New timestamp
 	    dataName = dataSet[i].split("\n");
 	    dateArray= dataName[0].split(" ");
-	    timeStampHold = new Date(dateArray[9],dateArray[4]-1,dateArray[5],dateArray[6],dateArray[7],dateArray[8]);
+	    timeStampHold = new Date(dateArray[9],dateArray[4]-1,dateArray[5],dateArray[6],dateArray[7]+5,dateArray[8]);
 	    timeArray.push(timeStampHold);
 
 	    //add a value equal to total
