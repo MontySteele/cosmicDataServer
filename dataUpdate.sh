@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # 4 paddle data
-cd /var/www/html/4Paddle
+cd /home/msteele9/public_html/4Paddle
 
 yes | rm all.dat
 
@@ -12,12 +12,12 @@ cat 20* > all.dat
 
 g++ formatLog.C
 ./a.out
-cp allFormat.dat  /var/www/html/allFormat4Paddle.dat
+cp allFormat.dat  /home/msteele9/public_html/allFormat4Paddle.dat
 
 
 
 # Pot data
-cd /var/www/html/Pot
+cd /home/msteele9/public_html/Pot
 
 yes | rm all.dat
 
@@ -27,12 +27,12 @@ cat 20* > all.dat
 
 g++ formatLog.C
 ./a.out
-cp allFormat.dat  /var/www/html/allFormatPot.dat
+cp allFormat.dat  /home/msteele9/public_html/allFormatPot.dat
 
 
 
 # Liquid scintillator data
-cd /var/www/html/MkData
+cd /home/msteele9/public_html/MkData
 
 yes | rm all.dat
 
@@ -40,4 +40,4 @@ scp -o "ProxyCommand ssh -q msteele9@npg.phy-astr.gsu.edu nc -w 120 %h %p" cosmi
 
 g++ formatLog.C
 ./a.out
-cp allFormat.dat  /var/www/html/allFormat.dat
+cp allFormat.dat  /home/msteele9/public_html/allFormat.dat

@@ -19,13 +19,14 @@ var smaArrayNeutron = new Array;
 var smaArray = new Array;
 var timeArray = new Array;
 // var logName = 'logAll.dat';
-var logName = 'allFormat.dat';
-var logPotName = 'allFormatPot.dat';
-var logFourPaddleName = 'allFormat4Paddle.dat';
+var logName = '~msteele9/allFormat.dat';
+var logPotName = '~msteele9/allFormatPot.dat';
+var logFourPaddleName = '~msteele9/allFormat4Paddle.dat';
 var link = "http://"+location.hostname+"/"+logName;
 var potLink = "http://"+location.hostname+"/"+logPotName;
 var FourPaddleLink = "http://"+location.hostname+"/"+logFourPaddleName;
 var i, tabcontent, tablinks;
+var meanCounts;
 
 window.onload = function(){
     document.getElementById("iconRow").appendChild(createButton("fa-file-text-o", link));
@@ -206,12 +207,46 @@ function show(){
 	    timeStamp.setTime(timeStamp.getTime()+60000);
 	}
     }
+    //formatData adds the data to the plot. If I want to get % first, need to do it here.
+
+
     formatData(span);
     sma = simple_moving_averager(buffer*60/span);
 
     //pre.textContent=this.response.split("\r\n");
     // document.body.appendChild(pre)
 }
+
+function getMeanCounts()
+{
+    //This function needs to be called -after- the graph is selected, but before it is produced. Read function?
+    //Read in the file, sum up the mean, replace meanCounts with it.
+
+    var count = 0;
+    var muonCount = 0;
+    var neutronCount = 0;
+    var i;
+    var c = 0;
+
+    for(i=0;i<(dataSet.length)-1;i++){	
+	
+	//New timestamp
+	dataName = dataSet[i].split("\n");
+	dateArray= dataName[0].split(" ");
+
+	// sums up 'span' minutes of data
+	count = count + Number(dateArray[0]);
+	muonCount = muonCount + Number(dateArray[1]);
+	neutronCount = neutronCount + Number(dateArray[2]);
+
+	 
+    }
+    
+meanCounts = cou
+
+}
+
+
 function formatData(x) {
     //Andrew Test
     spanArray = [];
@@ -223,7 +258,7 @@ function formatData(x) {
     var neutronTotal = 0;
     var i;
     var c = 0;
-    console.log(dataSet.length);
+    // console.log(dataSet.length);
     for(i=0;i<(dataSet.length)-1;i++){	
 	if(c==x){
 	    //New timestamp
@@ -233,9 +268,9 @@ function formatData(x) {
 	    timeArray.push(timeStampHold);
 
 	    //add a value equal to total
-	    spanArray.push(total/x);
-	    spanArrayMuon.push(muonTotal/x);
-	    spanArrayNeutron.push(neutronTotal/x);
+	    spanArray.push(total/x/meanCounts);
+	    spanArrayMuon.push(muonTotal/x/meanCounts);
+	    spanArrayNeutron.push(neutronTotal/x/meanCounts);
 	    //reset c and total
 	    total = 0;
 	    muonTotal = 0;

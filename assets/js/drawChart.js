@@ -10,8 +10,8 @@ function drawChartTotal() {
 	timeAdvance.setTime(timeAdvance.getTime()+(span*60000));
 	dataTotal.addRow(
 	    [ timeArray[i],
-	      spanArray[i]*span,
-	      smaArray[i]*span	]);
+	      spanArray[i],
+	      smaArray[i]	]);
     }
 
     var optionsTotal = {
@@ -27,7 +27,7 @@ function drawChartTotal() {
 	    bold: false
 	},
 	vAxis: {
-	    title: 'Counts',
+	    title: '% Variation in Counts',
 	    titleTextStyle: {
 		fontSize: 16,
 		//        color: '#93a1a1'
@@ -37,8 +37,8 @@ function drawChartTotal() {
 	    //      },
 	    viewWindowMode:'explicit',
 	    viewWindow:{
-		max: 'auto',
-		min: 'auto'
+		max: -15,
+		min: 15
 	    }//,
 	    //      textStyle:{
 	    //        color: '#93a1a1'
@@ -66,12 +66,12 @@ function drawChartTotal() {
 	    0: {
 		axis: 'Counts',
 		//        color: '#eee8d5',
-		pointSize: 3
+		pointSize: 0
 	    },
 	    1: {
 		axis: 'Moving Average',
-		lineWidth: 3,
-		//        color: '#6c71c4',
+		lineWidth: 1,
+		       color: '#0099C6',
 		// pointSize: 1,
 		pointsVisible: 0
 	    }
@@ -102,8 +102,8 @@ function drawChartMuon() {
 	dataMuon.addRow([
 	    // new Date(timeAdvance.getTime()),
 	    (timeArray[i]),
-	    (spanArrayMuon[i]*span),
-	    (smaArrayMuon[i]*span)
+	    (spanArrayMuon[i]),
+	    (smaArrayMuon[i])
 	]);
     }
 
@@ -120,7 +120,7 @@ function drawChartMuon() {
 	    bold: false
 	},
 	vAxis: {
-	    title: 'Muons',
+	    title: '% Variation in Muons',
 	    titleTextStyle: {
 		fontSize: 16,
 		//        color: '#93a1a1'
@@ -130,8 +130,8 @@ function drawChartMuon() {
 	    //      },
 	    viewWindowMode:'explicit',
 	    viewWindow:{
-		max: 'auto',
-		min: 'auto'
+		max: 15,
+		min: -15
 	    }//,
 	    //      textStyle:{
 	    //        color: '#93a1a1'
@@ -159,12 +159,13 @@ function drawChartMuon() {
 	    0: {
 		axis: 'Counts',
 		//        color: '#eee8d5',
-		pointSize: 3
+		pointSize: 3,
+                pointsVisible: 0
 	    },
 	    1: {
 		axis: 'Rolling Average',
-		lineWidth: 3,
-		//        color: '#6c71c4',
+		lineWidth: 1,
+		       color: '#3366CC',
 		// pointSize: 1,
 		pointsVisible: 0
 	    }
@@ -197,8 +198,8 @@ function drawChartNeutron() {
 	dataNeutron.addRow([
 	    // new Date(timeAdvance.getTime()),
 	    (timeArray[i]),
-	    (spanArrayNeutron[i]*span),
-	    (smaArrayNeutron[i]*span)
+	    (spanArrayNeutron[i]),
+	    (smaArrayNeutron[i])
 	]);
     }
 
@@ -215,7 +216,7 @@ function drawChartNeutron() {
 	    bold: false
 	},
 	vAxis: {
-	    title: 'Neutrons',
+	    title: '% Variation in Neutrons',
 	    titleTextStyle: {
 		fontSize: 16,
 		//        color: '#93a1a1'
@@ -225,8 +226,8 @@ function drawChartNeutron() {
 	    //      },
 	    viewWindowMode:'explicit',
 	    viewWindow:{
-		max: 'auto',
-		min: 'auto'
+		max: 30,
+		min: -30
 	    }//,
 	    //      textStyle:{
 	    //        color: '#93a1a1'
@@ -255,11 +256,11 @@ function drawChartNeutron() {
 	    0: {
 		axis: 'Counts',
 		//        color: '#eee8d5',
-		pointSize: 3
+		pointSize: 0
 	    },
 	    1: {
 		axis: 'Rolling Average',
-		lineWidth: 3,
+		lineWidth: 1,
 		//        color: '#6c71c4',
 		// pointSize: 1,
 		pointsVisible: 0
@@ -293,8 +294,8 @@ function drawChartPot() {
 	timeAdvance.setTime(timeAdvance.getTime()+(span*60000));
 	dataTotal.addRow(
 	    [ timeArray[i],
-	      spanArray[i]*span,
-	      smaArray[i]*span	]);
+	      spanArray[i],
+	      smaArray[i]	]);
     }
 
     var optionsTotal = {
@@ -310,7 +311,7 @@ function drawChartPot() {
 	    bold: false
 	},
 	vAxis: {
-	    title: 'Counts',
+	    title: '% Variation in Counts',
 	    titleTextStyle: {
 		fontSize: 16,
 		//        color: '#93a1a1'
@@ -320,9 +321,9 @@ function drawChartPot() {
 	    //      },
 	    viewWindowMode:'explicit',
 	    viewWindow:{
-		max: 'auto',
-		min: 'auto'
-	    }//,
+		max: 25,
+		min: -10
+	    }//
 	    //      textStyle:{
 	    //        color: '#93a1a1'
 	    //      }
@@ -349,11 +350,11 @@ function drawChartPot() {
 	    0: {
 		axis: 'Counts',
 		//        color: '#eee8d5',
-		pointSize: 3
+		pointSize: 0
 	    },
 	    1: {
 		axis: 'Moving Average',
-		lineWidth: 3,
+		lineWidth: 1,
 		//        color: '#6c71c4',
 		// pointSize: 1,
 		pointsVisible: 0
@@ -383,8 +384,8 @@ function drawChartFourPaddle() {
 	timeAdvance.setTime(timeAdvance.getTime()+(span*60000));
 	dataTotal.addRow(
 	    [ timeArray[i],
-	      spanArray[i]*span,
-	      smaArray[i]*span	]);
+	      spanArray[i],
+	      smaArray[i]	]);
     }
 
     var optionsTotal = {
@@ -400,7 +401,7 @@ function drawChartFourPaddle() {
 	    bold: false
 	},
 	vAxis: {
-	    title: 'Counts',
+	    title: '% Variation in Muons',
 	    titleTextStyle: {
 		fontSize: 16,
 		//        color: '#93a1a1'
@@ -410,8 +411,8 @@ function drawChartFourPaddle() {
 	    //      },
 	    viewWindowMode:'explicit',
 	    viewWindow:{
-		max: 'auto',
-		min: 'auto'
+		max: 6,
+		min: -15
 	    }//,
 	    //      textStyle:{
 	    //        color: '#93a1a1'
@@ -439,12 +440,12 @@ function drawChartFourPaddle() {
 	    0: {
 		axis: 'Counts',
 		//        color: '#eee8d5',
-		pointSize: 3
+		pointSize: 0
 	    },
 	    1: {
 		axis: 'Moving Average',
-		lineWidth: 3,
-		//        color: '#6c71c4',
+		lineWidth: 1,
+		        color: '#6c71c4',
 		// pointSize: 1,
 		pointsVisible: 0
 	    }

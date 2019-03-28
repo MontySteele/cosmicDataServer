@@ -6,6 +6,7 @@
 
 #include <stdio.h>
 int countlines (FILE *fin);
+void hourlyData (FILE *min );
 
 int yearInt;
 int monthInt;
@@ -100,8 +101,8 @@ int main() {
 
     if (counts > 9000) {
       printf(" You had over 9000 counts in 1 minute! This is assumed to be an error; that data point has been skipped.\n");
-	continue;
-	}
+      continue;
+    }
     if (strcmp(month,"Jan") == 0) strcpy(month, "1");
     if (strcmp(month,"Feb") == 0) strcpy(month, "2");
     if (strcmp(month,"Mar") == 0) strcpy(month, "3");
@@ -174,9 +175,17 @@ int main() {
     if(feof(f4)) break;
   }
 
-
   fclose(f4);
   fclose(f5);
+  
+  FILE *f6 = fopen("allFormat.dat", "r");
+  if (f2 == NULL) {
+    printf("Cannot find file allFormat.dat\n");
+    return 0;
+  }
+
+  hourlyData(f6);
+  fclose(f6);
   
 }
 
@@ -190,3 +199,82 @@ int countlines (FILE *fin)
   rewind(fin);
   return nlines;
 }
+
+void hourlyData (FILE *min )
+{
+
+  //Variables
+  int counts = -2;
+  int muons = 0;
+  int neutrons = 0;
+
+  int countsHold = 0;
+  int muonsHold = 0;
+  int neutronsHold = 0;
+
+  char year[255];
+  char month[255];
+  char day[255];
+  char hour[255];
+  char minute[255];
+  char second[255];
+  char weekday[255];
+
+  char yearHold[255];
+  char monthHold[255];
+  char dayHold[255];
+  char hourHold[255];
+  char minuteHold[255];
+  char secondHold[255];
+  char weekdayHold[255];
+
+  FILE *hourly = fopen("allFormatHourly.dat", "w+");
+  if (hourly == NULL) {
+    printf("Cannot find file allFormatHourly.dat\n");
+  }
+
+  fscanf(min, "%d %d %d %s %s %s %s %s %s %s", &counts, &muons, &neutrons, weekday, month, day, hour, minute, second, year);
+  printf("%d %d %d %s %s %s %s %s %s %s\n", counts, muons, neutrons, weekday, month, day, hour, minute, second, year);
+  strncpy(weekdayHold, weekday, 255);
+  strncpy(dayHold, day, 255);
+  strncpy(monthHold, month, 255);
+  strncpy(hourHold, hour, 255);
+  strncpy(yearHold, year, 255);
+  strncpy(minuteHold, minute, 255);
+  strncpy(secondHold, second, 255);
+
+  // One section for the normal events, one for when the hour changes
+  while (1) {
+
+    fscanf(min, "%d %d %d %s %s %s %s %s %s %s", &counts, &muons, &neutrons, weekday, month, day, hour, minute, second, year);
+
+    //Hour changes, print data for the previous hour
+    if (strcmp(dayHold, day) || strcmp(monthHold, month) || strcmp(yearHold, year) || strcmp(hourHold, hour) ){
+ 
+      fprintf(hourly, "%d %d %d %s %s %s %s %s %s %s\n", countsHold, muonsHold, neutronsHold, weekdayHold, monthHold, dayHold, hourHold, minuteHold, secondHold, yearHold);
+
+      strncpy(weekdayHold, weekday, 255);
+      strncpy(dayHold, day, 255);
+      strncpy(monthHold, month, 255);
+      strncpy(hourHold, hour, 255);
+      strncpy(yearHold, year, 255);
+      strncpy(minuteHold, minute, 255);
+      strncpy(secondHold, second, 255);
+
+      countsHold = counts;
+      muonsHold = muons;
+      neutronsHold = neutrons;
+
+    }
+    // Normal events, store data for this hour
+    else {
+      countsHold += counts;
+      muonsHold += muons;
+      neutronsHold += neutrons;
+    }
+
+    if(feof(min)) break;
+  }
+  fclose(hourly);
+}
+
