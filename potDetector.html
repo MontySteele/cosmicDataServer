@@ -1,0 +1,58 @@
+<!DOCTYPE HTML>
+
+<html>
+  <head>
+
+    
+    
+    <title>Pot Detector</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=2, user-scalable=no" />
+    <link rel="stylesheet" href="assets/css/main.css" />
+    <script type="text/javascript" src="http://livejs.com/live.js"></script>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+  </head>
+  <body>
+
+    <iframe onload="openPot(event, 'Pot Detector')" style="width:0;height:0;border:0; border:none;" src="assets/js/chart_phynp6.js"></iframe>
+
+
+    <div id="Pot Detector" class="tabcontent">
+
+      <div id="pot_counts"></div>
+      
+    </div>
+    
+    
+
+    <!-- Footer -->
+    <footer id="footer">
+     
+      <ul id="graphSettings" class="icons">
+	<li><p>Buffer size for moving average (hours):</p></li>
+	<li><p id="bufferValue"></p></li>
+	<li><input type="range" id="buffer" max="24" min="1" step="1" onchange="spanBufferChanged()" value = "6"></li>
+      </ul>
+      <ul id="iconRow" class="icons">
+      </ul>
+      <ul class="icons">
+	<li>GSU Nuclear Physics Group</li>
+      </ul>
+
+    </footer>
+</div>
+
+<p>
+This data is taken from a cosmic ray detector test stand located in Atlanta, GA. It is in 1 Park Place, Rm. 706. The graph shows the % variation in cosmic rays detected per hour using a running average. The span of the running average can be adjusted using the slider.
+</p>
+<p>
+This test stand records data from a detector that uses a scintillating liquid sensitive to both muons and neutrons. The above graph shows the combined counts of both muons and neutrons.
+</p>
+
+
+<!-- Scripts -->
+<script src="assets/js/chart_phynp6.js"></script>
+<script src="assets/js/drawChart.js"></script>
+
+</body>
+</html>
