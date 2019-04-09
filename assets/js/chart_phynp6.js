@@ -200,21 +200,21 @@ function spanBufferChanged(){
     formatData(span);
     sma = simple_moving_averager(buffer);
 
-    location.reload(true);
+    // location.reload(true);
 
-	/*
-	  setTimeout(function(){
-	
-	  drawChartTotal();
-	  drawChartMuon();
-	  drawChartNeutron();
-	  drawChartPot();
-	  drawChartFourPaddle();
-	
-	  }, 1000); 
-	*/
     
-	}
+      setTimeout(function(){
+	
+      drawChartTotal();
+      drawChartMuon();
+      drawChartNeutron();
+      drawChartPot();
+      drawChartFourPaddle();
+	
+      }, 1000); 
+	
+    
+}
 
 function show(){
     //var pre=document.createElement('pre');
