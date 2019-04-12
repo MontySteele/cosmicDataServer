@@ -26,9 +26,11 @@ var smaArray = new Array;
 var timeArray = new Array;
 // var logName = 'logAll.dat';
 var logName = '~msteele9/allFormat.dat';
+var logRAName = '~msteele9/MkData/afterJS.dat';
 var logPotName = '~msteele9/allFormatPot.dat';
 var logFourPaddleName = '~msteele9/allFormat4Paddle.dat';
 var link = "http://"+location.hostname+"/"+logName;
+var RALink = "http://"+location.hostname+"/"+logRAName;
 var potLink = "http://"+location.hostname+"/"+logPotName;
 var FourPaddleLink = "http://"+location.hostname+"/"+logFourPaddleName;
 var i, tabcontent, tablinks;
@@ -39,11 +41,14 @@ var meanNeutronCounts;
 window.onload = function(){
    
     document.getElementById("iconRow").appendChild(createButton("fa-github", "https://github.com/MontySteele/cosmicDataServer"));
+
+
+
 };
 
 function openPot(evt, cityName) {
 
- document.getElementById("iconRow").appendChild(createButton("fa-file-text-o", potLink));
+    document.getElementById("iconRow").appendChild(createButton("fa-file-text-o", potLink));
 
     // Get all elements with class="tabcontent" and hide them
     tabcontent = document.getElementsByClassName("tabcontent");
@@ -72,7 +77,10 @@ function openPot(evt, cityName) {
 
 function openLS(evt, cityName) {
 
- document.getElementById("iconRow").appendChild(createButton("fa-file-text-o", link));
+    document.getElementById("iconRow").appendChild(createButton("fa-file-text-o", link));
+
+    document.getElementById("iconRow").appendChild(createButton("fa-file-text-o", RALink));
+
     
     // Get all elements with class="tabcontent" and hide them
     tabcontent = document.getElementsByClassName("tabcontent");
@@ -109,7 +117,7 @@ function openLS(evt, cityName) {
 
 function openFour(evt, cityName) {
 
- document.getElementById("iconRow").appendChild(createButton("fa-file-text-o", FourPaddleLink));
+    document.getElementById("iconRow").appendChild(createButton("fa-file-text-o", FourPaddleLink));
     
     // Get all elements with class="tabcontent" and hide them
     tabcontent = document.getElementsByClassName("tabcontent");
@@ -203,15 +211,18 @@ function spanBufferChanged(){
     // location.reload(true);
 
     
-      setTimeout(function(){
+    setTimeout(function(){
 	
-      drawChartTotal();
-      drawChartMuon();
-      drawChartNeutron();
-      drawChartPot();
-      drawChartFourPaddle();
+	    drawChartTotal();
+	    drawChartTotalDaily();
+	    drawChartTotalMonthly();
+	    drawChartMuNeuRatio();      
+	    drawChartMuon();
+	    drawChartNeutron();
+	    drawChartPot();
+	    drawChartFourPaddle();
 	
-      }, 1000); 
+	}, 1000); 
 	
     
 }
@@ -324,32 +335,24 @@ function formatData(x) {
 	    //New timestamp
 	    dataName = dataSet[i].split("\n");
 	    dateArray= dataName[0].split(" ");
-	    timeStampHold = new Date(dateArray[9],dateArray[4]-1,dateArray[5],dateArray[6],dateArray[7]+5,dateArray[8]);
+	    timeStampHold = new Date(dateArray[9],dateArray[4]-1,dateArray[5],dateArray[6],dateArray[7],dateArray[8]);
 	    timeArray.push(timeStampHold);
 
 	    //add a value equal to total
 	    //x of these become the final result
 
-	    percentChange = (100)*(total/(x*meanCounts) - 1);
-	    percentChangeMuon = (100)*(muonTotal/(x*meanMuonCounts) - 1);
-	    percentChangeNeutron = (100)*(neutronTotal/(x*meanNeutronCounts) - 1);
+	    percentChange = (100)*(total/(x*meanCounts)) - 100;
+	    percentChangeMuon = (100)*(muonTotal/(x*meanMuonCounts)) - 100;
+	    percentChangeNeutron = (100)*(neutronTotal/(x*meanNeutronCounts)) - 100;
 
 	    countsArray.push(total);
-    countsArrayMuon.push(muonTotal);
-    countsArrayNeutron.push(neutronTotal);
+	    countsArrayMuon.push(muonTotal);
+	    countsArrayNeutron.push(neutronTotal);
 
 	    spanArray.push(percentChange);
 	    spanArrayMuon.push(percentChangeMuon);
 	    spanArrayNeutron.push(percentChangeNeutron);
 
-	    if (c == x && i % 1000 == 0) { 
-		console.log(total/x);
-		console.log(meanCounts);
-		console.log(percentChange*x);
-		console.log(percentChangeMuon*x);
-		console.log(percentChangeNeutron*x);
-	    }
-	    
 	    //reset c and total
 	    total = 0;
 	    muonTotal = 0;
@@ -371,14 +374,14 @@ read(link);
 
 google.charts.load('current', {'packages':['corechart']});
 /*
-google.charts.setOnLoadCallback(drawChartTotal);
-google.charts.setOnLoadCallback(drawMuNeuRatio);
-google.charts.setOnLoadCallback(drawChartTotalDaily);
-google.charts.setOnLoadCallback(drawChartTotalMonthly);
-google.charts.setOnLoadCallback(drawChartMuon);
-google.charts.setOnLoadCallback(drawChartNeutron);
-google.charts.setOnLoadCallback(drawChartPot);
-google.charts.setOnLoadCallback(drawChartFourPaddle);
+  google.charts.setOnLoadCallback(drawChartTotal);
+  google.charts.setOnLoadCallback(drawMuNeuRatio);
+  google.charts.setOnLoadCallback(drawChartTotalDaily);
+  google.charts.setOnLoadCallback(drawChartTotalMonthly);
+  google.charts.setOnLoadCallback(drawChartMuon);
+  google.charts.setOnLoadCallback(drawChartNeutron);
+  google.charts.setOnLoadCallback(drawChartPot);
+  google.charts.setOnLoadCallback(drawChartFourPaddle);
 */
 //Draws the chart for all of our data at once
 

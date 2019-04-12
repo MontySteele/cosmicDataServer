@@ -106,7 +106,7 @@ function drawChartTotalDaily() {
     dataTotalDaily.addColumn('date', 'Time');
     dataTotalDaily.addColumn('number','Moving Average');
 
-    for (i = spanArray.length-1-24; i < spanArray.length-1; i++) {
+    for (i = spanArray.length-1-12; i < spanArray.length-1; i++) {
 	timeAdvance.setTime(timeAdvance.getTime()+(span*60000));
 	dataTotalDaily.addRow(
 			      [ timeArray[i],
@@ -203,7 +203,7 @@ function drawChartTotalMonthly() {
     dataTotalMonthly.addColumn('date', 'Time');
     dataTotalMonthly.addColumn('number','Moving Average');
 
-    for (i = spanArray.length-1-(30*24); i < spanArray.length-1; i++) {
+    for (i = spanArray.length-1-(15*24); i < spanArray.length-1; i++) {
 	timeAdvance.setTime(timeAdvance.getTime()+(span*60000));
 	dataTotalMonthly.addRow(
 				[ timeArray[i],
