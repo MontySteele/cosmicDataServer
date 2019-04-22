@@ -6,6 +6,9 @@
 
 #include <stdio.h>
 int countlines (FILE *fin);
+void hourlyData (FILE *min );
+float getMeanCounts(FILE *target, int retval);
+void dataFormat(FILE *hourly);
 
 int yearInt;
 int monthInt;
@@ -90,6 +93,8 @@ int main() {
 
   fprintf(f3, "%d %d %d %s %s %s %s %s\n", counts, muons, neutrons, weekday, month, day, hour, year);
 
+  int countsFlag = 0;
+  int currentRead = 0;
   while (1) {
     counts = 0;
     fscanf(f1, "%d %d %d %s %s %s %s %s", &counts, &muons, &neutrons, weekday, month, day, hour, year);
@@ -98,10 +103,10 @@ int main() {
       if (hour[j] == ':') hour[j] = ' ';
     }
 
-    if (counts > 9000) {
-      printf(" You had over 9000 counts in 1 minute! This is assumed to be an error; that data point has been skipped.\n");
-	continue;
-	}
+    if (counts > 500) {
+      countsFlag = 1;
+      continue;
+    }
     if (strcmp(month,"Jan") == 0) strcpy(month, "1");
     if (strcmp(month,"Feb") == 0) strcpy(month, "2");
     if (strcmp(month,"Mar") == 0) strcpy(month, "3");
@@ -119,9 +124,16 @@ int main() {
     fprintf(f2, "%d\n", counts);
 
     fprintf(f3, "%d %d %d %s %s %s %s %s\n", counts, muons, neutrons, weekday, month, day, hour, year);
+    currentRead++;
     
     if(feof(f1)) break;
+    if (currentRead > nLines*2) {
+      printf("You have read twice as many lines as should exist in this file! Check that there is an EOF character!\n");
+      break;
+    }
   }
+
+  if (countsFlag == 1) printf("You had over 500 counts in 1 minute! This is assumed to be an error; those data points have been skipped.\n");
 
   fclose(f1);
   fclose(f2);
@@ -174,11 +186,30 @@ int main() {
     if(feof(f4)) break;
   }
 
-
   fclose(f4);
   fclose(f5);
   
+  FILE *f6 = fopen("allFormat.dat", "r");
+  if (f6 == NULL) {
+    printf("Cannot find file allFormat.dat\n");
+    return 0;
+  }
+
+  hourlyData(f6);
+
+
+  FILE *f7 = fopen("allFormatHourly.dat", "r");
+  if (f7 == NULL) {
+    printf("Cannot find file allFormat.dat\n");
+    return 0;
+  }
+
+  dataFormat(f7);
+
+  fclose(f7);
+
 }
+
 
 int countlines (FILE *fin)
 {
@@ -189,4 +220,258 @@ int countlines (FILE *fin)
   //  printf("%d lines\n", nlines);
   rewind(fin);
   return nlines;
+}
+
+void hourlyData (FILE *min )
+{
+
+  //Variables
+  int counts = -2;
+  int muons = 0;
+  int neutrons = 0;
+
+  int countsHold = 0;
+  int muonsHold = 0;
+  int neutronsHold = 0;
+
+  char year[255];
+  char month[255];
+  char day[255];
+  char hour[255];
+  char minute[255];
+  char second[255];
+  char weekday[255];
+
+  char yearHold[255];
+  char monthHold[255];
+  char dayHold[255];
+  char hourHold[255];
+  char minuteHold[255];
+  char secondHold[255];
+  char weekdayHold[255];
+  int minutesCounted = 0;;
+
+  FILE *hourly = fopen("allFormatHourly.dat", "w+");
+  if (hourly == NULL) {
+    printf("Cannot find file allFormatHourly.dat\n");
+  }
+
+  fscanf(min, "%d %d %d %s %s %s %s %s %s %s", &counts, &muons, &neutrons, weekday, month, day, hour, minute, second, year);
+  // printf("%d %d %d %s %s %s %s %s %s %s\n", counts, muons, neutrons, weekday, month, day, hour, minute, second, year);
+  strncpy(weekdayHold, weekday, 255);
+  strncpy(dayHold, day, 255);
+  strncpy(monthHold, month, 255);
+  strncpy(hourHold, hour, 255);
+  strncpy(yearHold, year, 255);
+  strncpy(minuteHold, minute, 255);
+  strncpy(secondHold, second, 255);
+
+  // One section for the normal events, one for when the hour changes
+  while (1) {
+   
+    fscanf(min, "%d %d %d %s %s %s %s %s %s %s", &counts, &muons, &neutrons, weekday, month, day, hour, minute, second, year);
+
+    //Hour changes, print data for the previous hour
+    if (strcmp(dayHold, day) || strcmp(monthHold, month) || strcmp(yearHold, year) || strcmp(hourHold, hour) ){
+
+      if (minutesCounted == 59) fprintf(hourly, "%d %d %d %s %s %s %s %s %s %s\n", countsHold, muonsHold, neutronsHold, weekdayHold, monthHold, dayHold, hourHold, minuteHold, secondHold, yearHold);
+
+      strncpy(weekdayHold, weekday, 255);
+      strncpy(dayHold, day, 255);
+      strncpy(monthHold, month, 255);
+      strncpy(hourHold, hour, 255);
+      strncpy(yearHold, year, 255);
+      strncpy(minuteHold, minute, 255);
+      strncpy(secondHold, second, 255);
+
+      countsHold = counts;
+      muonsHold = muons;
+      neutronsHold = neutrons;
+      minutesCounted = 0;
+
+    }
+    // Normal events, store data for this hour
+    else {
+      countsHold += counts;
+      muonsHold += muons;
+      neutronsHold += neutrons;
+      minutesCounted++;
+    }
+
+    if(feof(min)) break;
+  }
+  fclose(hourly);
+}
+
+//need filename and which column
+float getMeanCounts(FILE *target, int retval) {
+
+  // printf("Target rewound!\n");
+
+  if (target == NULL) {
+    printf("Cannot find target for mean counts\n");
+  }
+  else rewind(target);
+
+  char year[255];
+  char month[255];
+  char day[255];
+  char hour[255];
+  char minute[255];
+  char second[255];
+  char weekday[255];
+
+
+  float counts = 0;
+  float muonCounts = 0;
+  float neutronCounts = 0;
+
+  float countHold;
+  float muonHold; 
+  float neutronHold;
+  int i=0;
+
+
+  while(1) {
+    fscanf(target, "%f %f %f %s %s %s %s %s %s %s", &countHold, &muonHold, &neutronHold, weekday, month, day, hour, minute, second, year);
+
+    //   printf("total: %f, muons:%f, neutrons:%f\n", countHold, muonHold, neutronHold);
+ 
+    counts = counts + ((countHold - counts)/(i+1));
+    muonCounts = muonCounts + ((muonHold - muonCounts)/(i+1));
+    neutronCounts = neutronCounts + ((neutronHold - neutronCounts)/(i+1));
+    i++;
+
+    //  printf("total: %f, muons:%f, neutrons:%f\n", counts, muonCounts, neutronCounts);
+
+    if(feof(target)) break;
+  }
+
+  if (retval==1) return counts;
+  if (retval==2) return muonCounts;
+  if (retval==3) return neutronCounts;
+}
+
+void dataFormat(FILE *hourly){
+
+  FILE *formatted = fopen("afterJS.dat", "w+");
+  if (formatted == NULL) {
+    printf("Cannot find file afterJS.dat\n");
+  }
+
+  //Variables
+  int counts = -2;
+  int muons = 0;
+  int neutrons = 0;
+
+  int countsHold = 0;
+  int muonsHold = 0;
+  int neutronsHold = 0;
+
+  char year[255];
+  char month[255];
+  char day[255];
+  char hour[255];
+  char minute[255];
+  char second[255];
+  char weekday[255];
+
+  char yearHold[255];
+  char monthHold[255];
+  char dayHold[255];
+  char hourHold[255];
+  char minuteHold[255];
+  char secondHold[255];
+  char weekdayHold[255];
+  int minutesCounted = 0;
+
+  float meanCounts = getMeanCounts(hourly, 1);
+  // printf("all %f\n", meanCounts);
+  float meanMuons = getMeanCounts(hourly, 2);
+  // printf("muon %f\n", meanMuons);
+  float meanNeutrons = getMeanCounts(hourly, 3);
+  // printf("neutron %f\n", meanNeutrons);
+  // printf("total: %f, muons:%f, neutrons:%f\n", meanCounts, meanMuons, meanNeutrons);
+
+  float percChange;
+  float muonPercChange;
+  float neutronPercChange;
+
+  //Now I want to simulate the moving average, but my code only works one line at a time.
+  rewind(hourly);
+  int arraySize = countlines(hourly);
+  // printf("size %d\n", arraySize);
+
+  int countsArray[arraySize];
+  int countsArrayMuon[arraySize];
+  int countsArrayNeutron[arraySize];
+  int i = 0;
+
+  float smaArray[arraySize];
+  float smaArrayMuon[arraySize];
+  float smaArrayNeutron[arraySize];
+
+  float x;
+  float y;
+  float z;
+  int buffer = 6;
+  int j = 0;
+  int k;
+
+ 
+  // One section for the normal events, one for when the hour changes
+  while (1) {
+   
+    fscanf(hourly, "%d %d %d %s %s %s %s %s %s %s", &counts, &muons, &neutrons, weekday, month, day, hour, minute, second, year);
+    //  printf("total: %d, muons:%d, neutrons:%d\n", counts, muons, neutrons);
+
+    percChange = (100)*((float) counts/meanCounts) - 100;
+    muonPercChange = (100)*((float) muons/meanMuons) - 100;
+    neutronPercChange = (100)*((float) neutrons/meanNeutrons) - 100;
+
+    countsArray[i] = percChange;
+    countsArrayMuon[i] = muonPercChange;
+    countsArrayNeutron[i] = neutronPercChange;
+
+    // printf("total: %f, muons:%f, neutrons:%f\n", percChange, muonPercChange, neutronPercChange);
+
+    if(j<buffer){
+      x = 0;
+      y = 0;
+      z = 0;
+      for(k = 0;k<j;k++){
+	x = x + countsArray[j-k];
+	y = y + countsArrayMuon[j-k];
+	z = z + countsArrayNeutron[j-k];
+      }
+      smaArray[j] = (x/j);
+      smaArrayMuon[j] = (y/j);
+      smaArrayNeutron[j] = (z/j);
+    }else{
+      x = 0;
+      y = 0;
+      z = 0;
+      for(k = 0;k<buffer;k++){
+	x = x + countsArray[j-k];
+	y = y + countsArrayMuon[j-k];
+	z = z + countsArrayNeutron[j-k];
+      }
+      smaArray[j] = (x/buffer);
+      smaArrayMuon[j] = (y/buffer);
+      smaArrayNeutron[j] = (z/buffer);
+    }
+    if (j > 0) fprintf(formatted, "%f %f %f %s %s %s %s %s %s %s\n", smaArray[j], smaArrayMuon[j], smaArrayNeutron[j], weekday, month, day, hour, minute, second, year);
+
+    i++;
+    j++;
+    if(feof(hourly)) break;
+  }
+
+  // printf("%f %f %f %s %s %s %s %s %s %s\n", smaArray[j], smaArrayMuon[j], smaArrayNeutron[j], weekday, month, day, hour, minute, second, year);
+  
+
+ 
+
+  fclose(formatted);
+
 }
